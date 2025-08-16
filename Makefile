@@ -1,3 +1,4 @@
+ALEMBIC := alembic
 PIP := pip
 
 install:
@@ -5,3 +6,6 @@ install:
 
 install-dev:
 	@$(PIP) install -r requirements/dev.txt
+
+run-migrations:
+	$(ALEMBIC) upgrade head
