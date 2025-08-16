@@ -6,10 +6,9 @@ sys.path.append(os.getcwd())
 from alembic import context
 from logging.config import fileConfig
 from sqlalchemy import create_engine
-from sqlalchemy import pool
 
 from hotties_factory.app.config import Config
-from database import metadata
+from database.metadata import metadata
 
 
 # this is the Alembic Config object, which provides
@@ -32,7 +31,7 @@ target_metadata = metadata
 # ... etc.
 
 def get_database_url():
-    return Config('../../config.ini').get_sql_database_connection_url('pygresql')
+    return Config('./config.ini').get_sql_database_connection_url('psycopg2')
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
