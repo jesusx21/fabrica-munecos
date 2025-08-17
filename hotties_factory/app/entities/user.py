@@ -1,8 +1,8 @@
 from datetime import datetime
 from uuid import UUID
 
-from .errors import PasswordAlreadySet
 from hotties_factory.app.core import Entity
+from hotties_factory.app.entities.errors import PasswordAlreadySet
 
 
 class Password:

@@ -1,13 +1,13 @@
-from ..errors import NotFound, UserNotFound
-from .store import InMemoryStore
+from hotties_factory.database.stores.errors import NotFound, UserNotFound
+from hotties_factory.database.stores.memory.store import InMemoryStore
 
 
 class InMemoryUsersStore(InMemoryStore):
     def __init__(self):
         super().__init__('User')
 
-    async def find_by_id(self, job_id):
+    async def find_by_id(self, user_id):
         try:
-            return await super().find_by_id(job_id)
+            return await super().find_by_id(user_id)
         except NotFound:
-            raise UserNotFound({ 'id': job_id })
+            raise UserNotFound({ 'id': user_id })

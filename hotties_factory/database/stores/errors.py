@@ -42,6 +42,11 @@ class EmailAlreadyUsed(InvalidData):
         self.message = 'Email was already used.'
 
 
+class ProfileNotFound(NotFound):
+    def __init__(self, query, error = None):
+        super().__init__('Profile', query, error)
+
+
 class UserNotFound(NotFound):
     def __init__(self, query, error = None):
         super().__init__('User', query, error)

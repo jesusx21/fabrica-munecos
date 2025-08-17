@@ -1,1 +1,2 @@
-from .user import User  # noqa: F401
+from hotties_factory.app.entities.profile import Profile  # noqa: F401
+from hotties_factory.app.entities.user import User  # noqa: F401

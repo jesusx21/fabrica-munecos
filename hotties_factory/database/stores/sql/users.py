@@ -2,10 +2,10 @@ from uuid import UUID
 
 from sqlalchemy.exc import IntegrityError, NoResultFound
 
-from ..errors import EmailAlreadyUsed, InvalidId, UserNotFound
-from .errors import SQLDatabaseError
 from database.tables import Users
 from hotties_factory.app.entities import User
+from hotties_factory.database.stores.errors import EmailAlreadyUsed, InvalidId, UserNotFound
+from hotties_factory.database.stores.sql.errors import SQLDatabaseError
 
 
 class SQLUsersStore:

@@ -20,6 +20,8 @@ class DatabaseTestCase(IsolatedAsyncioTestCase):
         async with self._engine.begin() as connection:
             await connection.run_sync(metadata.drop_all)
 
+        await self._engine.dispose()
+
     async def execute(self, statement):
         async with self._engine.begin() as connection:
             return await connection.execute(statement)

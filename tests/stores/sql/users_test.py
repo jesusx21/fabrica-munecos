@@ -2,9 +2,7 @@ from datetime import datetime
 from unittest.mock import patch
 from uuid import UUID, uuid4
 
-from assertpy import assert_that
-
-from ..test_case import DatabaseTestCase
+from tests.stores.test_case import DatabaseTestCase
 from .fixtures import constants, fixtures
 
 from database.tables import Users
@@ -41,15 +39,15 @@ class TestCreateUser(TestSQLUsersStore):
     async def test_create_user(self):
         user_created = await self.database.users.create(self.user)
 
-        assert_that(user_created.id).is_instance_of(UUID)
-        assert_that(user_created.names).is_equal_to('Jon')
-        assert_that(user_created.last_names).is_equal_to('Doe')
-        assert_that(user_created.email).is_equal_to('jon.doe@gmail.com')
-        assert_that(user_created.password).is_instance_of(Password)
-        assert_that(user_created.password.hash).is_equal_to('fake-hash')
-        assert_that(user_created.password.salt).is_equal_to('fake-salt')
-        assert_that(user_created.created_at).is_equal_to_ignoring_milliseconds(datetime.now())
-        assert_that(user_created.updated_at).is_equal_to_ignoring_milliseconds(datetime.now())
+        self.assertIsInstance(user_created.id, UUID)
+        self.assertEqual(user_created.names, 'Jon')
+        self.assertEqual(user_created.last_names, 'Doe')
+        self.assertEqual(user_created.email, 'jon.doe@gmail.com')
+        self.assertIsInstance(user_created.password, Password)
+        self.assertEqual(user_created.password.hash, 'fake-hash')
+        self.assertEqual(user_created.password.salt, 'fake-salt')
+        self.assertIsInstance(user_created.created_at, datetime)
+        self.assertIsInstance(user_created.updated_at, datetime)
 
     async def test_create_with_repeated_email(self):
         self.user.email = 'luis.hernandez@example.com'

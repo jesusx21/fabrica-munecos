@@ -8,8 +8,6 @@ from alembic import op
 from typing import Sequence, Union
 import sqlalchemy as sa
 
-import database.types
-
 ${imports if imports else ""}
 
 # revision identifiers, used by Alembic.
