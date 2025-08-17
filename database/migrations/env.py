@@ -7,8 +7,8 @@ from alembic import context
 from logging.config import fileConfig
 from sqlalchemy import create_engine
 
-from hotties_factory.app.config import Config
 from database.metadata import metadata
+from hotties_factory.config import Config
 
 
 # this is the Alembic Config object, which provides

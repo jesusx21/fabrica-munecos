@@ -1,8 +1,9 @@
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from hotties_factory.app.config import Config
+from .errors import DatabaseDriverNotSupported
+from .stores.memory import InMemoryDatabase
 from .stores.sql import SQLDatabase
-from ...database.errors import DatabaseDriverNotSupported
+from hotties_factory.config import Config
 
 SQL_DRIVER = 'sql'
 MEMORY_DRIVER = 'memory'
@@ -18,6 +19,8 @@ class DatabaseFactory:
         if driver == SQL_DRIVER:
             engine = self._create_sql_engine()
             return SQLDatabase(engine)
+        elif driver == MEMORY_DRIVER:
+            return InMemoryDatabase()
         else:
             raise DatabaseDriverNotSupported(driver)
 
