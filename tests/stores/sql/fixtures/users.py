@@ -1,10 +1,10 @@
 from uuid import uuid4
 
-from . import constants
+from tests.stores.sql.fixtures import constants
 
 users_data = [
     {
-        'id': uuid4(),
+        'id': constants.FIRST_USER_ID,
         'names': 'Juan Carlos',
         'last_names': 'Ramírez López',
         'email': 'juan.ramirez@example.com',

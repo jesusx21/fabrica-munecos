@@ -1,4 +1,5 @@
-from .users import InMemoryUsersStore
+from hotties_factory.database.stores.memory.profiles import InMemoryProfilesStore
+from hotties_factory.database.stores.memory.users import InMemoryUsersStore
 
 
 class InMemoryDatabase:
@@ -6,4 +7,5 @@ class InMemoryDatabase:
         self._initialize_stores()
 
     def _initialize_stores(self):
+        self.profiles = InMemoryProfilesStore()
         self.users = InMemoryUsersStore()

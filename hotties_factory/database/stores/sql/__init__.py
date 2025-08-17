@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from .users import SQLUsersStore
+from hotties_factory.database.stores.sql.profiles import SQLProfilesStore
+from hotties_factory.database.stores.sql.users import SQLUsersStore
 
 
 class SQLDatabase:
@@ -14,4 +15,5 @@ class SQLDatabase:
             return await connection.execute(statement)
 
     def _initialize_stores(self):
+        self.profiles = SQLProfilesStore(self)
         self.users = SQLUsersStore(self)
