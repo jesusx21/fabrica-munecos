@@ -1,5 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from .users import SQLUsersStore
+
 
 class SQLDatabase:
     def __init__(self, engine: AsyncEngine):
@@ -12,4 +14,4 @@ class SQLDatabase:
             return await connection.execute(statement)
 
     def _initialize_stores(self):
-        pass
+        self.users = SQLUsersStore(self)
