@@ -1,4 +1,4 @@
-from hotties_factory.database.stores.errors import NotFound, UserNotFound
+from hotties_factory.database.stores.errors import NotFound, ProfileNotFound
 from hotties_factory.database.stores.memory.store import InMemoryStore
 
 
@@ -10,4 +10,4 @@ class InMemoryProfilesStore(InMemoryStore):
         try:
             return await super().find_by_id(profile_id)
         except NotFound:
-            raise UserNotFound({ 'id': profile_id })
+            raise ProfileNotFound({ 'id': profile_id })

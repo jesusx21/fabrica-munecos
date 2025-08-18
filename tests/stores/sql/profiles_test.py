@@ -78,7 +78,7 @@ class TestCreateProfile(TestSQLProfilesStore):
         with self.assertRaises(UserNotFound):
             await self.database.profiles.create(self.profile)
 
-    async def test_create_user_when_database_fails(self):
+    async def test_create_profile_when_database_fails(self):
         with patch.object(self.database, 'execute') as mock:
             mock.side_effect = Exception('An exception')
 

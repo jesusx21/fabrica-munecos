@@ -47,6 +47,11 @@ class ProfileNotFound(NotFound):
         super().__init__('Profile', query, error)
 
 
+class SessionNotFound(NotFound):
+    def __init__(self, query, error = None):
+        super().__init__('Session', query, error)
+
+
 class UserNotFound(NotFound):
     def __init__(self, query, error = None):
         super().__init__('User', query, error)
