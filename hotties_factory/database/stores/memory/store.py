@@ -39,3 +39,15 @@ class InMemoryStore:
             raise NotFound(self._entity_name, { 'id': entity_id })
         except Exception as error:
             raise DatabaseError(error)
+
+    def _find_one(self, query: dict):
+        try:
+            for entity in self._items.values():
+                if all(
+                    getattr(entity, field) == value for field, value in query.items()
+                ):
+                    return deepcopy(entity)
+        except Exception as error:
+            raise DatabaseError(error)
+
+        raise NotFound(self._entity_name, query)
