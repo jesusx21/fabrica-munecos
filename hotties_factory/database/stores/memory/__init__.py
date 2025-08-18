@@ -1,4 +1,5 @@
 from hotties_factory.database.stores.memory.profiles import InMemoryProfilesStore
+from hotties_factory.database.stores.memory.sessions import InMemorySessionsStore
 from hotties_factory.database.stores.memory.users import InMemoryUsersStore
 
 
@@ -8,4 +9,5 @@ class InMemoryDatabase:
 
     def _initialize_stores(self):
         self.profiles = InMemoryProfilesStore()
+        self.sessions = InMemorySessionsStore()
         self.users = InMemoryUsersStore()
