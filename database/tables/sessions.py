@@ -10,7 +10,7 @@ Sessions = Table(
     'sessions',
     metadata,
     Column('id', UUID, primary_key=True, server_default=text('gen_random_uuid()')),
-    Column('token', String(500), nullable=False),
+    Column('token', String(500), nullable=False, unique=True),
     Column('user_id', UUID, ForeignKey('users.id'), nullable=False),
     Column('expires_at', DateTime, nullable=False),
     Column('is_active', Boolean(), default=False),

@@ -97,3 +97,27 @@ class TestFindSessionsById(TestSQLSessionsStore):
 
             with self.assertRaises(SQLDatabaseError):
                 await self.database.sessions.find_by_id(constants.ACTIVE_FOR_FIRST_USER_SESSION_ID)
+
+
+class TestFindSessionsByToken(TestSQLSessionsStore):
+    async def test_find_session_by_token(self):
+        session = await self.database.sessions.find_by_token('token_fer_456def')
+
+        self.assertEqual(session.id, constants.INACTIVE_FOR_USER_SESSION_ID)
+        self.assertEqual(session.token, 'token_fer_456def')
+        self.assertFalse(session.is_active)
+
+        self.assertIsInstance(session, Session)
+        self.assertIsInstance(session.created_at, datetime)
+        self.assertIsInstance(session.updated_at, datetime)
+
+    async def test_find_session_with_not_existent_token(self):
+        with self.assertRaises(SessionNotFound):
+            await self.database.sessions.find_by_token('brand-new-token')
+
+    async def test_find_session_when_database_fails(self):
+        with patch.object(self.database, 'execute') as mock:
+            mock.side_effect = Exception('An exception')
+
+            with self.assertRaises(SQLDatabaseError):
+                await self.database.sessions.find_by_token('token_fer_456def')
