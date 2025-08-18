@@ -14,7 +14,7 @@ Profiles = Table(
     Column('birthdate', Date),
     Column('height', Integer, nullable=False),
     Column('weight', Integer, nullable=False),
-    Column('user_id', UUID, ForeignKey('users.id'), nullable=True),
+    Column('user_id', UUID, ForeignKey('users.id'), nullable=True, unique=True),
     Column('created_at', DateTime, server_default=now(), nullable=False),
     Column('updated_at', DateTime, server_default=now(), onupdate=now(), nullable=False)
 )

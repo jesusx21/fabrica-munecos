@@ -11,3 +11,9 @@ class InMemorySessionsStore(InMemoryStore):
             return await super().find_by_id(session_id)
         except NotFound:
             raise SessionNotFound({ 'id': session_id })
+
+    async def find_by_token(self, token):
+        try:
+            return await self._find_one({ 'token', token })
+        except NotFound:
+            raise SessionNotFound({ 'token', token })

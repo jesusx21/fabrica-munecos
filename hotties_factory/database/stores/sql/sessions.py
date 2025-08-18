@@ -37,18 +37,10 @@ class SQLSessionsStore:
         if not isinstance(session_id, UUID):
             raise InvalidId(session_id)
 
-        statement = Sessions \
-            .select() \
-            .where(Sessions.c.id == session_id)
+        return await self._find_one({ 'id': session_id })
 
-        try:
-            cursor = await self._database.execute(statement)
-
-            return self._create_session(cursor.one())
-        except NoResultFound as error:
-            raise SessionNotFound({ 'id': session_id }) from error
-        except Exception as error:
-            raise SQLDatabaseError(error)
+    async def find_by_token(self, token: str):
+        return await self._find_one({ 'token': token })
 
     def _create_session(self, cursor):
         session = Session(
@@ -62,3 +54,21 @@ class SQLSessionsStore:
         )
 
         return session
+
+    async def _find_one(self, query: dict):
+        statement = Sessions \
+            .select()
+
+        for key, value in query.items():
+            statement = statement.where(Sessions.c[key] == value)
+
+        statement = statement.limit(1)
+
+        try:
+            cursor = await self._database.execute(statement)
+
+            return self._create_session(cursor.one())
+        except NoResultFound as error:
+            raise SessionNotFound(query) from error
+        except Exception as error:
+            raise SQLDatabaseError(error)
