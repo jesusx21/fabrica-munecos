@@ -34,22 +34,14 @@ class SQLUsersStore:
 
         return await self.find_by_id(user_id)
 
+    async def find_by_email(self, email: str):
+        return await self._find_one({ 'email': email })
+
     async def find_by_id(self, user_id: UUID):
         if not isinstance(user_id, UUID):
             raise InvalidId(user_id)
 
-        statement = Users \
-            .select() \
-            .where(Users.c.id == user_id)
-
-        try:
-            cursor = await self._database.execute(statement)
-
-            return self._create_user(cursor.one())
-        except NoResultFound as error:
-            raise UserNotFound({ 'id': user_id }) from error
-        except Exception as error:
-            raise SQLDatabaseError(error)
+        return await self._find_one({ 'id': user_id })
 
     def _create_user(self, cursor):
         user = User(
@@ -64,3 +56,21 @@ class SQLUsersStore:
         user.set_password(cursor.password_hash, cursor.password_salt)
 
         return user
+
+    async def _find_one(self, query: dict):
+        statement = Users \
+            .select()
+
+        for key, value in query.items():
+            statement = statement.where(Users.c[key] == value)
+
+        statement = statement.limit(1)
+
+        try:
+            cursor = await self._database.execute(statement)
+
+            return self._create_user(cursor.one())
+        except NoResultFound as error:
+            raise UserNotFound(query) from error
+        except Exception as error:
+            raise SQLDatabaseError(error)

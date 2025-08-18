@@ -63,6 +63,31 @@ class TestCreateUser(TestSQLUsersStore):
                 await self.database.users.create(self.user)
 
 
+class TestFindUserByEmail(TestSQLUsersStore):
+    async def test_find_user_by_id(self):
+        user = await self.database.users.find_by_email('luis.hernandez@example.com')
+
+        self.assertIsInstance(user.id, UUID)
+        self.assertEqual(user.names, 'Luis Alberto')
+        self.assertEqual(user.last_names, 'Hernández Díaz')
+        self.assertEqual(user.email, 'luis.hernandez@example.com')
+
+        self.assertIsInstance(user, User)
+        self.assertIsInstance(user.created_at, datetime)
+        self.assertIsInstance(user.updated_at, datetime)
+
+    async def test_find_user_with_not_existent_email(self):
+        with self.assertRaises(UserNotFound):
+            await self.database.users.find_by_email('not_existent@gmail.com')
+
+    async def test_find_user_when_database_fails(self):
+        with patch.object(self.database, 'execute') as mock:
+            mock.side_effect = Exception('An exception')
+
+            with self.assertRaises(SQLDatabaseError):
+                await self.database.users.find_by_email('luis.hernandez@example.com')
+
+
 class TestFindUserById(TestSQLUsersStore):
     async def test_find_user_by_id(self):
         user = await self.database.users.find_by_id(constants.USER_ID)
