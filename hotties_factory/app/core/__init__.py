@@ -1,1 +1,1 @@
-from .entity import Entity  # noqa: F401
+from hotties_factory.app.core.entity import Entity  # noqa: F401

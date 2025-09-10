@@ -1,18 +1,21 @@
 from copy import deepcopy
 from datetime import datetime, timezone
+from typing import Generic, TypeVar, Dict, TypedDict
 from uuid import UUID, uuid4
 
-from ..errors import InvalidId, NotFound
 from hotties_factory.app.core import Entity
 from hotties_factory.database.errors import DatabaseError
+from hotties_factory.database.stores.errors import InvalidId, NotFound
 
 
-class InMemoryStore:
+T = TypeVar('T')
+
+class InMemoryStore(Generic[T]):
     def __init__(self, entity_name: str):
         self._entity_name = entity_name
-        self._items = dict()
+        self._items: Dict[str, T] = dict()
 
-    async def create(self, entity: Entity):
+    async def create(self, entity: T):
         if not entity.id:
             entity.id = uuid4()
 
@@ -29,7 +32,7 @@ class InMemoryStore:
         except Exception as error:
             raise DatabaseError(error)
 
-    async def find_by_id(self, entity_id):
+    async def find_by_id(self, entity_id: UUID):
         if not isinstance(entity_id, UUID):
             raise InvalidId(entity_id)
 
@@ -40,7 +43,7 @@ class InMemoryStore:
         except Exception as error:
             raise DatabaseError(error)
 
-    def _find_one(self, query: dict):
+    async def _find_one(self, query: dict):
         try:
             for entity in self._items.values():
                 if all(

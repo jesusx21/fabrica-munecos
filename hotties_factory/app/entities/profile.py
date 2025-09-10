@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from uuid import UUID
 
 from dateutil import relativedelta
@@ -28,9 +28,7 @@ class Profile(Entity):
 
     @property
     def age(self):
-        today = datetime.datetime.utcnow()
-        today = today.date()
-
+        today = datetime.now(timezone.utc).date()
         age = relativedelta.relativedelta(today, self.birthdate)
 
         return age.years

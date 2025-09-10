@@ -3,7 +3,7 @@ from uuid import UUID
 from sqlalchemy.exc import IntegrityError, NoResultFound
 
 from database.tables import Users
-from hotties_factory.app.entities import User
+from hotties_factory.app.entities import Password, User
 from hotties_factory.database.stores.errors import EmailAlreadyUsed, InvalidId, UserNotFound
 from hotties_factory.database.stores.sql.errors import SQLDatabaseError
 
@@ -52,8 +52,8 @@ class SQLUsersStore:
             created_at=cursor.created_at,
             updated_at=cursor.updated_at
         )
-
-        user.set_password(cursor.password_hash, cursor.password_salt)
+        password = Password(cursor.password_hash, cursor.password_salt)
+        user.add_password(password=password)
 
         return user
 

@@ -2,8 +2,7 @@ from copy import deepcopy
 
 from sqlalchemy.exc import NoResultFound
 
-from ..errors import DatabaseError
-
+from hotties_factory.database.errors import DatabaseError
 
 class InvalidData(DatabaseError):
     def __init__(self, data: dict, error: Exception = None):
@@ -18,7 +17,7 @@ class InvalidData(DatabaseError):
 
 class NotFound(DatabaseError):
     def __init__(self, record_name: str, query: dict, error: NoResultFound = None):
-        info = deepcopy(query)
+        info = query.copy()
         info['record_name'] = record_name
 
         super().__init__(

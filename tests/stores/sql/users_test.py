@@ -3,7 +3,7 @@ from unittest.mock import patch
 from uuid import UUID, uuid4
 
 from tests.stores.test_case import DatabaseTestCase
-from .fixtures import constants, fixtures
+from tests.stores.sql.fixtures import constants, fixtures
 
 from database.tables import Users
 from hotties_factory.app.entities import User
@@ -33,7 +33,8 @@ class TestCreateUser(TestSQLUsersStore):
             last_names='Doe',
             email='jon.doe@gmail.com'
         )
-        self.user.set_password('fake-hash', 'fake-salt')
+        password = Password('fake-hash', 'fake-salt')
+        self.user.add_password(password=password)
 
 
     async def test_create_user(self):

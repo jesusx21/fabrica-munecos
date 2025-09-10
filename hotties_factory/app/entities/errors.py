@@ -1,14 +1,20 @@
-class EntityError(Exception):
-    DEFAULT_MESSAGE = 'Something unexpected happened'
+from hotties_factory.app.errors import AppError
 
-    def __init__(self, error: Exception = None, message: str = DEFAULT_MESSAGE, info: dict = {}):
-        super().__init__()
 
-        self.cause = error
-        self.message = message
-        self.info = info
+class EntityError(AppError): pass
 
 
 class PasswordAlreadySet(EntityError):
     def __init__(self):
-        super().__init__(message = 'Password was already set')
+        super().__init__(message = 'Password was already set.')
+
+
+class MissingPassword(EntityError):
+    def __init__(self):
+        super().__init__(message = 'Password value is missing.')
+
+
+
+class InvalidPasswordValue(EntityError):
+    def __init__(self):
+        super().__init__(message = 'Just one value for password is valid.')

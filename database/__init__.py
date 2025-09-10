@@ -1,4 +1,4 @@
-from .metadata import metadata
+from database.metadata import metadata
 import database.tables  # noqa: F401
 
 from database.metadata import metadata
